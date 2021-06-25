@@ -10,8 +10,6 @@ const CardList = () => {
     const { searchedPokemon } = usePokemonSimpleSearch()
 
     useEffect(() => {
-        console.log('useeffect')
-        console.log(searchedPokemon, '<- LSKFLS')
         const request = searchedPokemon ? searchedPokemon : ''
         fetchPokemon(request)
     }, [])
