@@ -3,24 +3,26 @@ import { Box, Grid, ResponsiveContext, Grommet } from 'grommet'
 import { grommet } from 'grommet/themes';
 import PokemonCard from '../PokemonCard'
 import { useFetcher } from '../../hooks/useFetcher'
-import { usePokemonSimpleSearch } from '../../hooks/usePokemonSimpleSearch';
+import { useSearchContext } from '../../store/SearchContext';
 
 const CardList = () => {
     const { fetchPokemon, data: pokemonData } = useFetcher()
-    const { searchedPokemon } = usePokemonSimpleSearch()
+    const { search } = useSearchContext()
 
     useEffect(() => {
-        const request = searchedPokemon ? searchedPokemon : ''
+        const request = search ? search : ''
         fetchPokemon(request)
-    }, [])
-  
+    }, [search])
+
+
     const size = useContext(ResponsiveContext);
+    const determinePokemonDataStructure = pokemonData && pokemonData.results ? pokemonData.results : [pokemonData]
     return (
     <Grommet theme={grommet} full>
         <Box pad="large">
             {pokemonData ?
                 <Grid columns={size !== 'small' ? 'small' : '100%'} gap="small">
-                    {pokemonData.results.map((pokemonBasicData, i) => (
+                    {determinePokemonDataStructure.map((pokemonBasicData, i) => (
                         <PokemonCard pokemonBasicData={pokemonBasicData} key={i} />
                     ))}
             </Grid>

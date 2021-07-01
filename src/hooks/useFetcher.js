@@ -5,6 +5,8 @@ export const useFetcher = () => {
   const [ err, setErr ] = useState()
 
 
+  // test con spyon y mockimpletementation
+
   const fetchPokemon = (url) => {
     const pokeAPI = 'https://pokeapi.co/api/v2/pokemon/' + url
     fetch(pokeAPI)

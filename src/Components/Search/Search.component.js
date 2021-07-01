@@ -7,11 +7,11 @@ import {
   FormField,
   TextInput,
 } from 'grommet';
-import { usePokemonSimpleSearch } from '../../hooks/usePokemonSimpleSearch'
+import { useSearchContext } from '../../store/SearchContext'
 
 export const Search = () => {
   const [ pokemonSimpleSearch, setPokemonSimpleSearch ] = useState('');
-  const { onSearchSubmit } = usePokemonSimpleSearch()
+  const { setSearch } = useSearchContext()
 
   return (
       <Box fill align="center" justify="center">
@@ -20,7 +20,7 @@ export const Search = () => {
             onReset={() => {
                 setPokemonSimpleSearch('');
             }}
-            onSubmit={() => onSearchSubmit(pokemonSimpleSearch)}
+            onSubmit={() => setSearch(pokemonSimpleSearch)}
           >
             <FormField label="Search" name="pokemon simple search">
               <TextInput
