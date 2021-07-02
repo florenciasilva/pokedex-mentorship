@@ -10,7 +10,7 @@ const PokemonCard = ({pokemonBasicData, index}) => {
 
     useEffect(() => {
         fetchPokemon(name) 
-    }, [name, fetchPokemon])
+    }, [name])
 
     const handleDropdown = () => {
         if(name && !showDropdown) {

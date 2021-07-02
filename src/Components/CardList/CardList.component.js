@@ -11,15 +11,14 @@ const CardList = () => {
     useEffect(() => {
         const request = search ? search : ''
         fetchAllPokemon(request)
-    }, [search, fetchAllPokemon])
+    }, [search])
 
     const size = useContext(ResponsiveContext);
-    const determinePokemonDataStructure = pokemonData && pokemonData.results ? pokemonData.results : [pokemonData]
     return (
         <Box fill>
             {pokemonData ?
-                <Grid columns={size !== 'small' ? 'small' : '100%'} gap="medium">
-                    {determinePokemonDataStructure.map((pokemonBasicData, i) => (
+                <Grid data-testid="pokemon-card" columns={size !== 'small' ? 'small' : '100%'} gap="medium">
+                    {pokemonData.results.map((pokemonBasicData, i) => (
                         <PokemonCard pokemonBasicData={pokemonBasicData} key={i} index={i} />
                     ))}
             </Grid>

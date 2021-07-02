@@ -18,7 +18,7 @@ export const usePagination = () => {
 
       useEffect(() => {
         fetchAllPokemon('' , offset)
-      }, [offset, fetchAllPokemon])
+      }, [offset])
 
     return { handleNextPage, handlePreviousPage}
 }
