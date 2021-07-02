@@ -1,34 +1,30 @@
 import { useContext, useEffect } from 'react'
-import { Box, Grid, ResponsiveContext, Grommet } from 'grommet'
-import { grommet } from 'grommet/themes';
+import { Box, Grid, ResponsiveContext } from 'grommet'
 import PokemonCard from '../PokemonCard'
-import { useFetcher } from '../../hooks/useFetcher'
+import { useDataContext } from '../../store/DataContext'
 import { useSearchContext } from '../../store/SearchContext';
 
 const CardList = () => {
-    const { fetchPokemon, data: pokemonData } = useFetcher()
+    const { fetchAllPokemon, data: pokemonData } = useDataContext()
     const { search } = useSearchContext()
 
     useEffect(() => {
         const request = search ? search : ''
-        fetchPokemon(request)
-    }, [search])
-
+        fetchAllPokemon(request)
+    }, [search, fetchAllPokemon])
 
     const size = useContext(ResponsiveContext);
     const determinePokemonDataStructure = pokemonData && pokemonData.results ? pokemonData.results : [pokemonData]
     return (
-    <Grommet theme={grommet} full>
-        <Box pad="large">
+        <Box fill>
             {pokemonData ?
-                <Grid columns={size !== 'small' ? 'small' : '100%'} gap="small">
+                <Grid columns={size !== 'small' ? 'small' : '100%'} gap="medium">
                     {determinePokemonDataStructure.map((pokemonBasicData, i) => (
-                        <PokemonCard pokemonBasicData={pokemonBasicData} key={i} />
+                        <PokemonCard pokemonBasicData={pokemonBasicData} key={i} index={i} />
                     ))}
             </Grid>
             : null } 
         </Box>
-    </Grommet>
     )
 }
 

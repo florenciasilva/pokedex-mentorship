@@ -14,8 +14,7 @@ export const Search = () => {
   const { setSearch } = useSearchContext()
 
   return (
-      <Box fill align="center" justify="center">
-        <Box width="medium">
+      <Box pad="medium" align="center" justify="center">
           <Form
             onReset={() => {
                 setPokemonSimpleSearch('');
@@ -34,7 +33,6 @@ export const Search = () => {
             </Box>
           </Form>
         </Box>
-      </Box>
   );
 };
 

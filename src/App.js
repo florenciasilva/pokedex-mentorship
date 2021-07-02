@@ -3,19 +3,23 @@ import { grommet } from 'grommet/themes';
 import Header from './Components/Header'
 import CardList from './Components/CardList/CardList.component';
 import SearchProvider from './store/SearchContext'
-
-// agregar usePokemonSimpleSearch como contexto.
+import Pagination from './Components/Pagination'
+import DataProvider from './store/DataContext'
 
 const App = () => {
+
   return (
-    <SearchProvider>
-      <Grommet theme={grommet}>
-        <Main pad="large" align="center" justify="center">
-          <Header />
-          <CardList  />
-        </Main>
-      </Grommet>
-    </SearchProvider>
+    <DataProvider>
+      <SearchProvider>
+        <Grommet theme={grommet}>
+          <Main pad="large" align="center" justify="center">
+            <Header />
+            <CardList />
+            <Pagination />
+          </Main>
+        </Grommet>
+      </SearchProvider>
+    </DataProvider>
   );
 }
 

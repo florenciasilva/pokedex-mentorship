@@ -1,12 +1,12 @@
 import { useState } from 'react'
-import { useFetcher } from './useFetcher'
+import { useDataContext } from '../store/DataContext'
 
 export const usePokemonDetail = () => {
     const [ pokemonData, setPokemonData ] = useState('')
-    const { fetchPokemon } = useFetcher()
+    const { fetchAllPokemon } = useDataContext()
 
     const getPokemonDetail = (pokemonName) => {
-        const data = fetchPokemon(pokemonName)       
+        const data = fetchAllPokemon(pokemonName)       
         setPokemonData(data)
     }
     
