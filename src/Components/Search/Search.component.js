@@ -28,8 +28,8 @@ export const Search = () => {
                 onChange={event => setPokemonSimpleSearch(event.target.value)}
               />
             </FormField>
-            <Box direction="row" justify="end" margin={{ top: 'medium' }}>
-              <Button type="submit" label="Update" primary />
+            <Box direction="row" justify="center" margin={{ top: 'medium' }}>
+              <Button type="submit" label="Search" primary />
             </Box>
           </Form>
         </Box>

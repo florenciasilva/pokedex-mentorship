@@ -7,7 +7,6 @@ import Pagination from './Components/Pagination'
 import DataProvider from './store/DataContext'
 
 const App = () => {
-
   return (
     <DataProvider>
       <SearchProvider>

@@ -1,36 +1,30 @@
 import { Card, Heading, Button, Image, CardBody, CardHeader, Spinner } from 'grommet'
 import PokemonDetailsDropdown from '../PokemonDetailsDropdown'
-import { useFetcher } from '../../hooks/useFetcher'
-import { useState, useEffect } from 'react'
+import { useState } from 'react'
 
 const PokemonCard = ({pokemonBasicData, index}) => {
     const { name } = pokemonBasicData
-    const { fetchPokemon, data } = useFetcher()
     const [ showDropdown, setShowDropdown ] = useState('')
 
-    useEffect(() => {
-        fetchPokemon(name) 
-    }, [name])
-
     const handleDropdown = () => {
-        if(name && !showDropdown) {
+        if(pokemonBasicData && !showDropdown) {
             setShowDropdown(index)
-        } else if (data && showDropdown) {
+        } else if (pokemonBasicData && showDropdown) {
             setShowDropdown('')
         } else {
             setShowDropdown('')
         }
     }
    
-   return data ? (
+   return pokemonBasicData ? (
             <Card width="medium" height="medium">
                 <CardHeader pad="small" direction="column">
-                        <Image src={data.sprites.front_default} />
+                        <Image src={pokemonBasicData.sprites.front_default} />
                         <Heading level={2} size="small" margin="none">{name}</Heading>
                         <Button onClick={handleDropdown} secondary label="details"/>
                     </CardHeader>
                     <CardBody pad="small">
-                { showDropdown === index && <PokemonDetailsDropdown pokemonDetail={data} /> }
+                { showDropdown === index && <PokemonDetailsDropdown pokemonDetail={pokemonBasicData} /> }
                 </CardBody>
             </Card>
         )

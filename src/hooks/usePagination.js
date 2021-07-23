@@ -6,6 +6,7 @@ export const usePagination = () => {
     const [ offset, setOffset ] = useState(0)
     const { fetchAllPokemon } = useDataContext()
 
+
     const handleNextPage = () => {
         const newOffset = offset + limitNumber;
         setOffset(newOffset)
@@ -20,5 +21,5 @@ export const usePagination = () => {
         fetchAllPokemon('' , offset)
       }, [offset])
 
-    return { handleNextPage, handlePreviousPage}
+    return { handleNextPage, handlePreviousPage, setOffset}
 }

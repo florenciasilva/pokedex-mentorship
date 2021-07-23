@@ -2,6 +2,7 @@ import { useState } from 'react'
 
 export const useFetcher = () => {
   const [ data, setData ] = useState()
+
   const [ err, setErr ] = useState()
 
 
