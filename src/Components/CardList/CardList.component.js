@@ -25,6 +25,7 @@ const CardList = () => {
             fetchAllPokemon('', pathname.slice(pathname.indexOf('=') + 1))
             pokemonDetail && mapPokemonCards(pokemonDetail)
         }
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname])
 
     useEffect(() => {

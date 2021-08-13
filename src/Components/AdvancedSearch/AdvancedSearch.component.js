@@ -10,6 +10,7 @@ const AdvancedSearch = () => {
 
     useEffect(() => {
        fetchPokemonTypeList('')
+       // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
 

@@ -1,20 +1,15 @@
 import { useState, useEffect, useCallback } from 'react'
 import { useSearchContext } from '../store/SearchContext';
 import { limitNumber } from '../constants'
-import { useLocation } from "react-router-dom";
 
 export const usePokemonList = () => {
     const [ pokemonList, setPokemonList ] = useState()
     const [ pokemonDetail, setPokemonDetail ] = useState()
     const [ advancedSearchList, setAdvacedSearchList] = useState()
     const { search, advancedSearch } = useSearchContext()
-    const location = useLocation();
-
 
     const fetchAllPokemon = (url, offset) => {
-        
         const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${url || ''}?limit=${limitNumber}&offset=${offset || ''}`
-        console.log(pokeAPI)
         fetch(pokeAPI)
         .then(res => res.json())
         .then(res => {
@@ -53,7 +48,6 @@ export const usePokemonList = () => {
 
     useEffect(() => {
         fetchAllPokemon()
-        console.log('lkdjglkd')
         if(search.length > 0) {
             fetch(`https://pokeapi.co/api/v2/pokemon/${search}`)
             .then(res => res.json())
@@ -64,6 +58,7 @@ export const usePokemonList = () => {
 
     useEffect(() => {
         fetchPokemonDetails()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [pokemonList])
 
     useEffect(() => {
