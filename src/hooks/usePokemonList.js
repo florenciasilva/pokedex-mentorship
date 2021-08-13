@@ -9,6 +9,14 @@ export const usePokemonList = () => {
     const { search, advancedSearch } = useSearchContext()
 
 
+    const fetchAllPokemon = (url, offset) => {
+        const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${url || ''}?limit=${limitNumber}&offset=${offset || ''}`
+        fetch(pokeAPI)
+        .then(res => res.json())
+        .then(res => setPokemonList(res.results))
+        .catch(err => err)
+      }
+
     const fetchPokemonDetails = () => {
         let promises = []
         const awaitJson = (responses) => Promise.all(responses.map(response => {
@@ -25,7 +33,7 @@ export const usePokemonList = () => {
         .catch(err => err)
     }
 
-    const fetchPokemonByType = (type) => {
+    const filterPokemonListByType = (type) => {
         if(pokemonDetail) {
             const filterPokemon = pokemonDetail.map(pokemon => {
                 const filterTypes = pokemon.types.map(pokemonType => pokemonType.type.name === type ? pokemon.name : '' )
@@ -37,17 +45,10 @@ export const usePokemonList = () => {
         }
     }
 
-    const fetchAllPokemon = (url, offset) => {
-        const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${url || ''}?limit=${limitNumber}&offset=${offset || ''}`
-        fetch(pokeAPI)
-        .then(res => res.json())
-        .then(res => setPokemonList(res.results))
-        .catch(err => err)
-      }
 
     useEffect(() => {
         fetchAllPokemon()
-    }, [])    
+    }, [search])    
 
     useEffect(() => {
         fetchPokemonDetails()
@@ -64,11 +65,11 @@ export const usePokemonList = () => {
 
     useEffect(() => {
         if(advancedSearch.length > 0) {
-            fetchPokemonByType(advancedSearch)
+            filterPokemonListByType(advancedSearch)
         }
     }, [advancedSearch])
 
 
 
-    return { pokemonDetail, fetchPokemonByType, advancedSearchList, fetchAllPokemon }
+    return { pokemonDetail, advancedSearchList, fetchAllPokemon }
 }

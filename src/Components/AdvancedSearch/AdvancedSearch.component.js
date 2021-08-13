@@ -1,11 +1,10 @@
 import { useEffect, useState } from 'react'
-import { useDataContext } from '../../store/DataContext'
 import { Box, Button, Collapsible } from 'grommet';
-import { usePokemonList } from '../../hooks/usePokemonList';
+import { usePokemonTypeList } from '../../hooks/usePokemonTypeList';
 import { useSearchContext } from '../../store/SearchContext'
 
 const AdvancedSearch = () => {
-    const { fetchPokemonTypeList, typeList } = useDataContext()
+    const { fetchPokemonTypeList, typeList } = usePokemonTypeList()
     const [open, setOpen] = useState(false);
     const { advancedSearch, setAdvancedSearch } = useSearchContext()
 
