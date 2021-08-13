@@ -1,11 +1,12 @@
 import { useState, useEffect } from 'react'
-import { usePokemonList } from '../hooks/usePokemonList'
+import { useSearchContext } from '../store/SearchContext'
 import { limitNumber } from '../constants'
+import { useHistory } from 'react-router-dom'
 
 export const usePagination = () => {
+    const history = useHistory()
+    const { search } = useSearchContext
     const [ offset, setOffset ] = useState(0)
-    const { fetchAllPokemon } = usePokemonList()
-
 
     const handleNextPage = () => {
         const newOffset = offset + limitNumber;
@@ -18,9 +19,12 @@ export const usePagination = () => {
       }
 
       useEffect(() => {
-        window.history.pushState({ ...window.history.state }, '', `offset=${offset}`)
-        fetchAllPokemon('' , offset)
+       history.push(`offset=${offset}`, '')
       }, [offset])
+
+      useEffect(() => {
+        if(search && search.length === 0) history.push(`offset=0`, '')
+      }, [ search ])
 
     return { handleNextPage, handlePreviousPage, setOffset}
 }
