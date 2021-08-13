@@ -3,6 +3,11 @@ import CardList from './CardList.component'
 import { contextMock } from '../../utils/contextMock'
 
 contextMock()
+jest.mock("react-router-dom", () => ({
+    useLocation: () => ({
+      pathname: "localhost:3000/"
+    })
+  }));
 const wrapper = render(
     <CardList />
 )
