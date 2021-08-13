@@ -12,9 +12,10 @@ const useSearchContext = () => {
 
 const SearchProvider = ({ children }) => {
   const [search, setSearch] = useState('');
+  const [advancedSearch, setAdvancedSearch] = useState('');
 
   return (
-    <SearchContext.Provider value={{ search, setSearch }}>
+    <SearchContext.Provider value={{ search, setSearch, advancedSearch, setAdvancedSearch }}>
       {children}
     </SearchContext.Provider>
   );

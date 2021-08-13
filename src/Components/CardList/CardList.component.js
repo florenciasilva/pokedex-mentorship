@@ -4,19 +4,25 @@ import PokemonCard from '../PokemonCard'
 import { useSearchContext } from '../../store/SearchContext';
 import { usePokemonList } from '../../hooks/usePokemonList'
 
-const CardList = () => {
+const CardList = ({pathname}) => {
     const [ pokemonCards, setPokemonCards ] = useState()
-    const { search } = useSearchContext()
-    const { pokemonDetail } = usePokemonList()
+    const { search, advancedSearch } = useSearchContext()
+    const { pokemonDetail, advancedSearchList } = usePokemonList()
 
-    useEffect(() => {
-        const mapPokemonList = pokemonDetail && pokemonDetail.map((pokemon, i) => (
+    const mapPokemonCards = (list) => {
+       const pokemonList = list.map((pokemon, i) => (
             <PokemonCard pokemonBasicData={pokemon} key={i} index={i}/>
         ))
 
-        setPokemonCards(mapPokemonList)
-    }, [search, pokemonDetail])
-    
+        setPokemonCards(pokemonList)
+    }
+
+    useEffect(() => {
+        if(advancedSearchList && advancedSearchList !== '' && advancedSearch !== '') mapPokemonCards(advancedSearchList)
+        else {
+            pokemonDetail && mapPokemonCards(pokemonDetail)
+        }
+    }, [pokemonDetail, search, advancedSearchList, advancedSearch, pathname])
 
     const size = useContext(ResponsiveContext);
     return (

@@ -1,53 +1,74 @@
 import { useState, useEffect } from 'react'
 import { useSearchContext } from '../store/SearchContext';
+import { limitNumber } from '../constants'
 
 export const usePokemonList = () => {
     const [ pokemonList, setPokemonList ] = useState()
     const [ pokemonDetail, setPokemonDetail ] = useState()
-    const [ isAdvancedSearch, setIsAdvancedSearch ] = useState(false)
-    const [ searchedType, setType ] = useState()
-    const { search } = useSearchContext()
+    const [ advancedSearchList, setAdvacedSearchList] = useState()
+    const { search, advancedSearch } = useSearchContext()
 
-    useEffect(() => {
-        fetch(`https://pokeapi.co/api/v2/pokemon/`)
-        .then(res => res.json())
-        .then(res => setPokemonList(res.results))
-        .catch(err => err)
-    }, [search])    
 
-    useEffect(() => {
-       let promises = []
-       const awaitJson = (responses) => Promise.all(responses.map(response => {
-        if(response.ok) return response.json();
-        throw new Error(response.statusText);
-      }))
+    const fetchPokemonDetails = () => {
+        let promises = []
+        const awaitJson = (responses) => Promise.all(responses.map(response => {
+            if(response.ok) return response.json();
+            throw new Error(response.statusText);
+        }))
 
-      !isAdvancedSearch && pokemonList && pokemonList.forEach((pokemon) => promises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)))
+        pokemonList && pokemonList.forEach((pokemon) => promises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)))
     
         Promise.all(promises)
         .then(awaitJson)
-        .then(res => setPokemonDetail(res))
+        .then(res => {
+            setPokemonDetail(res)})
         .catch(err => err)
-    
-    }, [pokemonList, isAdvancedSearch])
+    }
 
-    useEffect(() => {
-        fetch(`https://pokeapi.co/api/v2/pokemon/${search}`)
+    const fetchPokemonByType = (type) => {
+        if(pokemonDetail) {
+            const filterPokemon = pokemonDetail.map(pokemon => {
+                const filterTypes = pokemon.types.map(pokemonType => pokemonType.type.name === type ? pokemon.name : '' )
+                return pokemon.name === filterTypes.join('') ? pokemon : ''
+            })
+
+            const sanitizeFilterPokemon = filterPokemon.filter(e => e)
+            setAdvacedSearchList(sanitizeFilterPokemon)
+        }
+    }
+
+    const fetchAllPokemon = (url, offset) => {
+        const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${url || ''}?limit=${limitNumber}&offset=${offset || ''}`
+        fetch(pokeAPI)
         .then(res => res.json())
-        .then(res => setPokemonList([res]))
+        .then(res => setPokemonList(res.results))
         .catch(err => err)
-    }, [search])
-
-
-    const fetchPokemonByType = (searchedType) => {
-        setIsAdvancedSearch(true)
-        setType(searchedType)
       }
 
     useEffect(() => {
-        console.log(pokemonDetail, searchedType, '<- ñslf')
-    }, [ searchedType, pokemonDetail ])
+        fetchAllPokemon()
+    }, [])    
+
+    useEffect(() => {
+        fetchPokemonDetails()
+    }, [pokemonList])
+
+    useEffect(() => {
+        if(search.length > 0) {
+            fetch(`https://pokeapi.co/api/v2/pokemon/${search}`)
+            .then(res => res.json())
+            .then(res => setPokemonList([res]))
+            .catch(err => err)
+        }
+    }, [search])
+
+    useEffect(() => {
+        if(advancedSearch.length > 0) {
+            fetchPokemonByType(advancedSearch)
+        }
+    }, [advancedSearch])
 
 
-    return { pokemonDetail, fetchPokemonByType }
+
+    return { pokemonDetail, fetchPokemonByType, advancedSearchList, fetchAllPokemon }
 }

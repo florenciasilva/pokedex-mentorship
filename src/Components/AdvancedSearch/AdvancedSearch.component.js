@@ -2,25 +2,21 @@ import { useEffect, useState } from 'react'
 import { useDataContext } from '../../store/DataContext'
 import { Box, Button, Collapsible } from 'grommet';
 import { usePokemonList } from '../../hooks/usePokemonList';
+import { useSearchContext } from '../../store/SearchContext'
 
 const AdvancedSearch = () => {
     const { fetchPokemonTypeList, typeList } = useDataContext()
-    const { fetchPokemonByType } = usePokemonList()
     const [open, setOpen] = useState(false);
+    const { advancedSearch, setAdvancedSearch } = useSearchContext()
 
     useEffect(() => {
        fetchPokemonTypeList('')
     }, [])
 
 
-    const handleTypeFilter = (type) => {
-        fetchPokemonByType(type)
-    }
-
-
     const mapTypeList = typeList && typeList.map(type => {
         return (
-            <Button size="medium" secondary label={type.name} margin="small" onClick={() => handleTypeFilter(type.name)}/>
+            <Button size="medium" secondary active={advancedSearch === type.name} label={type.name} margin="small" onClick={() => setAdvancedSearch(type.name)}/>
         )
     })
 
@@ -40,6 +36,8 @@ const AdvancedSearch = () => {
                     fill
                 >
                     {mapTypeList}
+                    <Button primary onClick={() => setAdvancedSearch('')} label="Clear" />
+
                 </Box>
             </Collapsible>
       </Box>

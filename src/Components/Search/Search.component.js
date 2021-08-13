@@ -19,7 +19,7 @@ export const Search = () => {
             onReset={() => {
                 setPokemonSimpleSearch('');
             }}
-            onSubmit={() => setSearch(pokemonSimpleSearch)}
+            onSubmit={() => setSearch(pokemonSimpleSearch.toLowerCase())}
           >
             <FormField label="Search" name="pokemon simple search">
               <TextInput

@@ -1,10 +1,10 @@
 import { useState, useEffect } from 'react'
-import { useDataContext } from '../store/DataContext'
+import { usePokemonList } from '../hooks/usePokemonList'
 import { limitNumber } from '../constants'
 
 export const usePagination = () => {
     const [ offset, setOffset ] = useState(0)
-    const { fetchAllPokemon } = useDataContext()
+    const { fetchAllPokemon } = usePokemonList()
 
 
     const handleNextPage = () => {
@@ -18,6 +18,7 @@ export const usePagination = () => {
       }
 
       useEffect(() => {
+        window.history.pushState({ ...window.history.state }, '', `offset=${offset}`)
         fetchAllPokemon('' , offset)
       }, [offset])
 
