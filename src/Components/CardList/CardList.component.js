@@ -38,7 +38,7 @@ const CardList = () => {
     const size = useContext(ResponsiveContext);
     return (
         <Box fill margin={{ top: "medium"}}>
-            <Grid data-testid="pokemon-card" columns={size !== 'small' ? 'small' : '100%'} gap="medium">
+            <Grid data-testid="pokemon-card" columns='medium' gap="xsmall">
                 {pokemonCards}
             </Grid>
         </Box>

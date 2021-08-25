@@ -1,30 +1,24 @@
-import { Card, Heading, Button, Image, CardBody, CardHeader, Spinner } from 'grommet'
-import PokemonDetailsDropdown from '../PokemonDetailsDropdown'
-import { useState } from 'react'
+import { Card, Heading, CardBody, Spinner, ResponsiveContext } from 'grommet'
+import { StyledCardHeader } from './PokemonCard.module'
+import PokemonDetailsTabs from '../PokemonDetailsTabs'
+import { useContext } from 'react'
+import { colorByType } from '../../constants'
 
-const PokemonCard = ({pokemonBasicData, index}) => {
-    const { name } = pokemonBasicData
-    const [ showDropdown, setShowDropdown ] = useState('')
+const PokemonCard = ({pokemonBasicData}) => {
+    const { name, types, id, sprites } = pokemonBasicData
+    const colorOfFirstType = colorByType(types)[0]
+    const capitalizeName = name.charAt(0).toUpperCase() + name.slice(1)
+    const sprite = sprites.other['official-artwork'].front_default
+    const size = useContext(ResponsiveContext);
 
-    const handleDropdown = () => {
-        if(pokemonBasicData && !showDropdown) {
-            setShowDropdown(index)
-        } else if (pokemonBasicData && showDropdown) {
-            setShowDropdown('')
-        } else {
-            setShowDropdown('')
-        }
-    }
-   
    return pokemonBasicData ? (
-            <Card width="medium" height="medium">
-                <CardHeader pad="small" direction="column">
-                        <Image src={pokemonBasicData.sprites.front_default} />
-                        <Heading level={2} size="small" margin="none">{name}</Heading>
-                        <Button onClick={handleDropdown} secondary label="details"/>
-                    </CardHeader>
-                    <CardBody pad="small">
-                { showDropdown === index && <PokemonDetailsDropdown pokemonDetail={pokemonBasicData} /> }
+            <Card width='medium' height="large" margin={{bottom: '30px'}}>
+                <StyledCardHeader pad="small" direction="column" background={colorOfFirstType} sprite={sprite} height='medium'>
+                        <p style={{ alignSelf: 'flex-start'}}>#{id}</p>
+                        <Heading level={2} size="small" margin="none" style={{backgroundColor: colorOfFirstType}}>{capitalizeName}</Heading>
+                    </StyledCardHeader>
+                    <CardBody pad="small" >
+                <PokemonDetailsTabs pokemonDetail={pokemonBasicData} />
                 </CardBody>
             </Card>
         )

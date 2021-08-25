@@ -46,6 +46,15 @@ export const usePokemonList = () => {
     }, [pokemonDetail, setAdvacedSearchList])
 
 
+    const fetchPokemonEvolutionChain = async (id) => {
+        const url = `http://pokeapi.co/api/v2/evolution-chain/${id}/`
+
+        const fetchChain = await fetch(url)
+        const data = fetchChain.json()
+
+        return data
+    }
+
     useEffect(() => {
         fetchAllPokemon()
         if(search.length > 0) {
@@ -69,5 +78,5 @@ export const usePokemonList = () => {
 
 
 
-    return { pokemonDetail, advancedSearchList, fetchAllPokemon, fetchPokemonDetails }
+    return { pokemonDetail, advancedSearchList, fetchAllPokemon, fetchPokemonDetails, fetchPokemonEvolutionChain }
 }

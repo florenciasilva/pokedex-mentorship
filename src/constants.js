@@ -1,8 +1,8 @@
 export const limitNumber = 30
 
 export const colorByType = (types) => {
-    types.map(type => {
-        switch(type){
+    return types.map(type => {
+        switch(type.type.name){
             case 'normal': 
                 return '#A8A77A'
             case 'fighting':
