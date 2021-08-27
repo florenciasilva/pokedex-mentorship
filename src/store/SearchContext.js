@@ -11,7 +11,7 @@ const useSearchContext = () => {
 };
 
 const SearchProvider = ({ children }) => {
-  const [search, setSearch] = useState();
+  const [search, setSearch] = useState('');
   const [advancedSearch, setAdvancedSearch] = useState('');
   
 

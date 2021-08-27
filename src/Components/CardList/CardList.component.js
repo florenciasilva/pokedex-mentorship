@@ -5,11 +5,12 @@ import { useSearchContext } from '../../store/SearchContext';
 import { usePokemonList } from '../../hooks/usePokemonList'
 import { useLocation } from "react-router-dom";
 
-const CardList = ({detail}) => {
+const CardList = () => {
     const location = useLocation();
     const [ pokemonCards, setPokemonCards ] = useState()
     const { search, advancedSearch } = useSearchContext()
-    const { advancedSearchList, pokemonDetail, fetchAllPokemon} = usePokemonList()
+    const { advancedSearchList, pokemonDetail, fetchAllPokemon, pokemonListSearch} = usePokemonList()
+    const { pathname } = location
 
     const mapPokemonCards = (list) => {
        const pokemonList = list.map((pokemon, i) => (
@@ -20,10 +21,9 @@ const CardList = ({detail}) => {
 
     useEffect(() => {
         fetchAllPokemon()
-    }, [])
+    }, [location.pathname])
 
     useEffect(() => {
-        const { pathname } = location
         if (pathname.slice(-2) > 0){ 
             fetchAllPokemon('', pathname.slice(pathname.indexOf('=') + 1))
             pokemonDetail && mapPokemonCards(pokemonDetail)
@@ -33,6 +33,7 @@ const CardList = ({detail}) => {
 
     useEffect(() => {
         if(advancedSearchList && advancedSearchList !== '' && advancedSearch !== '') mapPokemonCards(advancedSearchList)
+        if(pokemonListSearch && pokemonListSearch !== '' && search !== '') mapPokemonCards(pokemonListSearch)
         else {
             pokemonDetail && mapPokemonCards(pokemonDetail)
         }

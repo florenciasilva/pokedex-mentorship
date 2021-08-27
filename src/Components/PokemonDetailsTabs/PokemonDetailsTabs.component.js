@@ -1,50 +1,25 @@
 import { Tabs, Tab, Box, Meter, Text, Tip, List} from 'grommet'
 import { usePokemonList } from '../../hooks/usePokemonList'
 import { useState, useEffect } from 'react'
+import { useLocation } from "react-router-dom";
 
 const PokemonDetailsDropdown = ({pokemonDetail}) => {
-    const {types, abilities, stats, weight, height, id, sprite } = pokemonDetail
+    const {types, abilities, stats, weight, height, name } = pokemonDetail
     const { fetchPokemonEvolutionChain } = usePokemonList()
     const [ evolutionChain, setEvolutionChain ] = useState([])
     const pokemonTypes = types.map(type => type.type.name)
     const typeName = pokemonTypes.map(type => type)
+    const location = useLocation();
 
-    const getEvolutionChain = async () => {
-        let evoChain = [];
-        const chain = await fetchPokemonEvolutionChain(id)
-        let evoData = chain.chain;
-        do {
-        let numberOfEvolutions = evoData['evolves_to'].length;  
-
-        evoChain.push({
-            "species_name": evoData.species.name,
-            "min_level": !evoData ? 1 : evoData.min_level,
-            "trigger_name": !evoData ? null : evoData.trigger_name,
-            "item": !evoData ? null : evoData.item
-        });
-
-        if(numberOfEvolutions > 1) {
-            for (let i = 1;i < numberOfEvolutions; i++) { 
-            evoChain.push({
-                "species_name": evoData.evolves_to[i].species.name,
-                "min_level": !evoData.evolves_to[i]? 1 : evoData.evolves_to[i].min_level,
-                "trigger_name": !evoData.evolves_to[i]? null : evoData.evolves_to[i].trigger_name,
-                "item": !evoData.evolves_to[i]? null : evoData.evolves_to[i].item
-            });
-            }
-        }        
-
-        evoData = evoData['evolves_to'][0]
-
-        } while (!!evoData && evoData.hasOwnProperty('evolves_to'))
-
-        setEvolutionChain(evoChain)
-        return evoChain
+    const getEvolutionChain = async (name) => {
+        const chain = await fetchPokemonEvolutionChain(name)
+        const evolvesFrom = chain.evolves_from_species && chain.evolves_from_species.name ? <p> Evolves from: {chain.evolves_from_species?.name}</p> : <p>First of evolution chain</p>
+        setEvolutionChain(evolvesFrom)
     }
 
     useEffect(() => {
-        getEvolutionChain()
-    }, [])
+        getEvolutionChain(name)
+    }, [location.pathname])
 
     const getAbilities = () => abilities.map((ability, i) => <span>{ability.ability.name} {i === 0 && '| '}</span>)
     const statsColorRange = (statName) => {
@@ -101,7 +76,7 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
     ]
 
     return (
-        <Tabs onActive={(e) => console.log('hola', e.target)}>
+        <Tabs>
             <Tab title="Overview">
                 <Box pad="small">
                 <List data={overviewListData.slice(0, overviewListData.length)}
@@ -125,8 +100,7 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
             </Tab>
             <Tab title="Evolutions">
                 <Box pad="small">
-                {console.log(evolutionChain)}
-                {evolutionChain.map(pokemon => <p>{pokemon.species_name}</p>)}
+                {evolutionChain}
                 </Box>
             </Tab>
             </Tabs>

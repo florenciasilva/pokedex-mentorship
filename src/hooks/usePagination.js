@@ -22,9 +22,5 @@ export const usePagination = () => {
        history.push(`offset=${offset}`, '')
       }, [offset, history])
 
-      useEffect(() => {
-        if(search && search.length === 0) history.push(`offset=0`, '')
-      }, [ search, history ])
-
     return { handleNextPage, handlePreviousPage, setOffset}
 }

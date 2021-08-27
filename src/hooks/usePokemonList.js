@@ -14,7 +14,6 @@ export const usePokemonList = () => {
         fetch(pokeAPI)
         .then(res => res.json())
         .then(res => {
-            console.log(res.results)
             setPokemonList(res.results)
             return res.results
         })
@@ -52,19 +51,19 @@ export const usePokemonList = () => {
 
 
     const fetchPokemonEvolutionChain = async (id) => {
-        const url = `http://pokeapi.co/api/v2/evolution-chain/${id}/`
+        const url = `http://pokeapi.co/api/v2/pokemon-species/${id}/`
         const fetchChain = await fetch(url)
         const data = fetchChain.json()
         return data
     }
 
     useEffect(() => {
-       if(pokemonList && pokemonList.length > 0) {
+       if(pokemonList && pokemonList.length > 0 ) {
             fetchPokemonDetails(pokemonList)
         }
         if(pokemonListSearch && pokemonListSearch.length > 0) {
             fetchPokemonDetails(pokemonListSearch)
-        }
+        } 
     }, [pokemonList, pokemonListSearch])
     
     useEffect(() => {
@@ -73,8 +72,7 @@ export const usePokemonList = () => {
             .then(res => res.json())
             .then(res => setPokemonListSearch([res]))
             .catch(err => err)
-        } 
-         else if(search === '') {
+        } else if (search === '' && pokemonList.length === 1) {
             fetchPokemonDetails(pokemonList)
         }
     }, [search, setSearch])
@@ -85,5 +83,5 @@ export const usePokemonList = () => {
         }
     }, [advancedSearch, filterPokemonListByType])
 
-    return { pokemonDetail, advancedSearchList, fetchAllPokemon, fetchPokemonDetails, fetchPokemonEvolutionChain, setPokemonListSearch }
+    return { pokemonDetail, advancedSearchList, fetchAllPokemon, fetchPokemonDetails, fetchPokemonEvolutionChain, setPokemonListSearch, pokemonListSearch }
 }
