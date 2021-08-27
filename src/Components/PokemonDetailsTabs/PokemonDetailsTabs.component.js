@@ -10,10 +10,41 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
     const typeName = pokemonTypes.map(type => type)
 
     const getEvolutionChain = async () => {
+        let evoChain = [];
         const chain = await fetchPokemonEvolutionChain(id)
-        const blah = chain?.chain?.evolves_to.map(specie => <p>{specie.species.name}</p>) || []
-        setEvolutionChain(blah)
+        let evoData = chain.chain;
+        do {
+        let numberOfEvolutions = evoData['evolves_to'].length;  
+
+        evoChain.push({
+            "species_name": evoData.species.name,
+            "min_level": !evoData ? 1 : evoData.min_level,
+            "trigger_name": !evoData ? null : evoData.trigger_name,
+            "item": !evoData ? null : evoData.item
+        });
+
+        if(numberOfEvolutions > 1) {
+            for (let i = 1;i < numberOfEvolutions; i++) { 
+            evoChain.push({
+                "species_name": evoData.evolves_to[i].species.name,
+                "min_level": !evoData.evolves_to[i]? 1 : evoData.evolves_to[i].min_level,
+                "trigger_name": !evoData.evolves_to[i]? null : evoData.evolves_to[i].trigger_name,
+                "item": !evoData.evolves_to[i]? null : evoData.evolves_to[i].item
+            });
+            }
+        }        
+
+        evoData = evoData['evolves_to'][0]
+
+        } while (!!evoData && evoData.hasOwnProperty('evolves_to'))
+
+        setEvolutionChain(evoChain)
+        return evoChain
     }
+
+    useEffect(() => {
+        getEvolutionChain()
+    }, [])
 
     const getAbilities = () => abilities.map((ability, i) => <span>{ability.ability.name} {i === 0 && '| '}</span>)
     const statsColorRange = (statName) => {
@@ -94,7 +125,8 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
             </Tab>
             <Tab title="Evolutions">
                 <Box pad="small">
-                    {evolutionChain}
+                {console.log(evolutionChain)}
+                {evolutionChain.map(pokemon => <p>{pokemon.species_name}</p>)}
                 </Box>
             </Tab>
             </Tabs>

@@ -1,7 +1,6 @@
-import { Card, Heading, CardBody, Spinner, ResponsiveContext } from 'grommet'
+import { Card, Heading, CardBody, Spinner } from 'grommet'
 import { StyledCardHeader } from './PokemonCard.module'
 import PokemonDetailsTabs from '../PokemonDetailsTabs'
-import { useContext } from 'react'
 import { colorByType } from '../../constants'
 
 const PokemonCard = ({pokemonBasicData}) => {
@@ -9,7 +8,6 @@ const PokemonCard = ({pokemonBasicData}) => {
     const colorOfFirstType = colorByType(types)[0]
     const capitalizeName = name.charAt(0).toUpperCase() + name.slice(1)
     const sprite = sprites.other['official-artwork'].front_default
-    const size = useContext(ResponsiveContext);
 
    return pokemonBasicData ? (
             <Card width='medium' height="large" margin={{bottom: '30px'}}>
