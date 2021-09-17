@@ -2,6 +2,7 @@ import { Tabs, Tab, Box, Meter, Text, Tip, List} from 'grommet'
 import { usePokemonList } from '../../hooks/usePokemonList'
 import { useState, useEffect } from 'react'
 import { useLocation } from "react-router-dom";
+import { overviewListData } from '../../utils/pokemonDetailOverviewList'
 
 const PokemonDetailsDropdown = ({pokemonDetail}) => {
     const {types, abilities, stats, weight, height, name } = pokemonDetail
@@ -54,32 +55,13 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
         </>
         )
     })
-
-    
-    const overviewListData = [
-        {
-            title: 'Type',
-            data: typeName
-        },
-        {
-            title: 'Weight',
-            data: weight
-        },
-        {
-            title: 'Height',
-            data: height
-        },
-        {
-            title: 'Abilities',
-            data: getAbilities()
-        },
-    ]
+    const overviewList = overviewListData(typeName, weight, height, getAbilities)
 
     return (
         <Tabs>
             <Tab title="Overview">
                 <Box pad="small">
-                <List data={overviewListData.slice(0, overviewListData.length)}
+                <List data={overviewList.slice(0, overviewList.length)}
                     primaryKey={item => (
                     <Text size="small" weight="bold" color="dark-4">
                         {item.title}

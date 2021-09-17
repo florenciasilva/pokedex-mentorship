@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react'
-import { Box, Grid } from 'grommet'
+import { Box, Grid, Spinner } from 'grommet'
 import PokemonCard from '../PokemonCard'
 import { useSearchContext } from '../../store/SearchContext';
 import { usePokemonList } from '../../hooks/usePokemonList'
@@ -39,7 +39,7 @@ const CardList = () => {
         }
     }, [pokemonDetail, search, advancedSearchList, advancedSearch])
 
-    return !pokemonDetail ? <p>loading</p> : (
+    return !pokemonDetail ? <Spinner /> : (
         <Box fill margin={{ top: "medium"}}>
             <Grid data-testid="pokemon-card" columns='medium' gap="xsmall">
                 {pokemonCards}
