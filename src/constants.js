@@ -1,1 +1,0 @@
-export const limitNumber = 30
