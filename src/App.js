@@ -1,24 +1,12 @@
-import { Grommet, Main } from 'grommet'
-import { grommet } from 'grommet/themes';
-import Header from './Components/Header'
-import MainPage from './Components/pages/Main'
-import { BrowserRouter as Router } from 'react-router-dom'
-import SearchProvider from './store/SearchContext'
+import { Main, Heading, Paragraph } from 'grommet'
 
-const App = () => {
+function App() {
   return (
-    <Router>
-      <SearchProvider>
-        <Grommet theme={grommet}>
-          <Main pad="large" align="center" justify="center">
-            <Header />
-            <MainPage />
-          </Main>
-        </Grommet>
-      </SearchProvider>
-    </Router>
+    <Main pad="large">
+      <Heading>Something</Heading>
+      <Paragraph>Something about something</Paragraph>
+    </Main>
   );
 }
 
 export default App;
-
