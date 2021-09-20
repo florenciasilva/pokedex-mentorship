@@ -11,8 +11,12 @@ import { useSearchContext } from '../../store/SearchContext'
 
 export const Search = () => {
   const [ pokemonSimpleSearch, setPokemonSimpleSearch ] = useState('');
-  const { setSearch } = useSearchContext()
+  const { setSearch, search } = useSearchContext()
 
+  const resetSearch = () => {
+    setSearch('')
+    setPokemonSimpleSearch('')
+  }
   return (
       <Box pad="medium" align="center" justify="center">
           <Form
@@ -30,6 +34,8 @@ export const Search = () => {
             </FormField>
             <Box direction="row" justify="center" margin={{ top: 'medium' }}>
               <Button type="submit" label="Search" primary />
+              {search.length > 0 && <Button label="Reset" secondary onClick={resetSearch} />}
+
             </Box>
           </Form>
         </Box>
