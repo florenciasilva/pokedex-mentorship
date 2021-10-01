@@ -8,15 +8,13 @@ export const usePokemonList = () => {
     const [ pokemonListSearch, setPokemonListSearch ] = useState([])
     const [ pokemonDetail, setPokemonDetail ] = useState()
     const [ advancedSearchList, setAdvacedSearchList] = useState()
-    const [ loading, setIsLoading ] = useState(true)
     const { search, advancedSearch, setSearch } = useSearchContext()
+
     const fetchAllPokemon = (url, offset) => {
         const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${url || ''}?limit=${limitNumber}&offset=${offset || ''}`
         fetch(pokeAPI)
         .then(res => res.json())
-        .then(res => {
-            setPokemonList(res.results)
-        })
+        .then(res => setPokemonList(res.results))
         .catch(err => err)
       }
 
@@ -30,15 +28,7 @@ export const usePokemonList = () => {
 
         Promise.all(promises)
         .then(awaitJson)
-        .then(res => {
-            setIsLoading(true)
-            return res
-        })
-        .then(res => {
-            setPokemonDetail(res)
-            setIsLoading(false)
-            return res
-        })
+        .then(res => setPokemonDetail(res))
         .catch(err => err)
     }
 
@@ -75,5 +65,5 @@ export const usePokemonList = () => {
         }
     }, [advancedSearch, filterPokemonListByType])
 
-    return { pokemonDetail, advancedSearchList, fetchAllPokemon, fetchPokemonDetails, fetchPokemonEvolutionChain, setPokemonListSearch, pokemonListSearch, loading }
+    return { pokemonDetail, advancedSearchList, fetchAllPokemon, fetchPokemonDetails, fetchPokemonEvolutionChain, setPokemonListSearch, pokemonListSearch }
 }
