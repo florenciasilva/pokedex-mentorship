@@ -45,7 +45,10 @@ const CardList = () => {
         }
     }, [pokemonDetail, search, advancedSearchList, advancedSearch, pokemonListSearch])
 
-    return !pokemonDetail || loading ? <Spinner /> : (
+    return !pokemonDetail || loading ? <Spinner size="medium" message={{
+        start: "Pokemon list is loading",
+        end: "Pokemon list has finished loading"
+      }}/> : (
         <Box fill margin={{ top: "medium"}}>
             <Grid data-testid="pokemon-card" columns='medium' gap="xsmall" ref={ref}>
                 {pokemonCards}

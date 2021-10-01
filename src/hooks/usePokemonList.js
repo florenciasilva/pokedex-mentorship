@@ -57,12 +57,14 @@ export const usePokemonList = () => {
         } else {
             fetchPokemonDetails(pokemonList)
         } 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search, setSearch])
 
     useEffect(() => {
         if(advancedSearch.length > 0) {
             filterPokemonListByType(advancedSearch, setAdvacedSearchList, pokemonDetail)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [advancedSearch, filterPokemonListByType])
 
     return { pokemonDetail, advancedSearchList, fetchAllPokemon, fetchPokemonDetails, fetchPokemonEvolutionChain, setPokemonListSearch, pokemonListSearch }

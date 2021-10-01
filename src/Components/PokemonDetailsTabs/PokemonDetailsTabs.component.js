@@ -20,6 +20,7 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
 
     useEffect(() => {
         getEvolutionChain(name)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname])
 
     const getAbilities = () => abilities.map((ability, i) =>  <span>{ability.ability.name} {i === 0 && '| '}</span>)
@@ -33,6 +34,7 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
                 return '#FFAA15'
             case 'speed':
                 return '#00739D'
+            default: return ''
         }
     }
     const getStats = () => stats.map((stat, i) => {

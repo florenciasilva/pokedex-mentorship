@@ -30,6 +30,7 @@ export const Search = () => {
                 name="pokemonSimpleSearch"
                 value={pokemonSimpleSearch}
                 onChange={event => setPokemonSimpleSearch(event.target.value)}
+                placeholder="Search by name or #"
               />
             </FormField>
             <Box direction="row" justify="center" margin={{ top: 'medium' }}>
