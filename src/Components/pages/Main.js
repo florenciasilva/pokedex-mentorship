@@ -1,15 +1,16 @@
-import CardList from '../CardList'
+import React from 'react';
 import Pagination from '../Pagination'
-import { usePokemonList } from '../../hooks/usePokemonList'
-import { useEffect } from 'react'
+import CardList from '../CardList'
+
 
 const Main = () => {
     return (
         <>
-            <CardList pathname={window.location.href}/>
-            <Pagination />
+        <CardList pathname={window.location.href}/>
+        <Pagination />
         </>
     )
 }
 
 export default Main
+

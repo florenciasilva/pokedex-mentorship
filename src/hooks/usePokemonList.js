@@ -14,9 +14,7 @@ export const usePokemonList = () => {
         const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${url || ''}?limit=${limitNumber}&offset=${offset || ''}`
         fetch(pokeAPI)
         .then(res => res.json())
-        .then(res => {
-            setPokemonList(res.results)
-        })
+        .then(res => setPokemonList(res.results))
         .catch(err => err)
       }
 
@@ -30,27 +28,19 @@ export const usePokemonList = () => {
 
         Promise.all(promises)
         .then(awaitJson)
-        .then(res => {
-            setIsLoading(true)
-            return res
-        })
-        .then(res => {
-            setPokemonDetail(res)
-            setIsLoading(false)
-            return res
-        })
+        .then(res => setPokemonDetail(res))
         .catch(err => err)
     }
 
     const fetchPokemonEvolutionChain = async (id) => {
-        const url = `http://pokeapi.co/api/v2/pokemon-species/${id}/`
+        const url = `https://pokeapi.co/api/v2/pokemon-species/${id}/`
         const fetchChain = await fetch(url)
         const data = fetchChain.json()
         return data
     }
 
     useEffect(() => {
-       if(pokemonList && pokemonList.length > 0 ) {
+       if(pokemonList && pokemonList.length > 0) {
             fetchPokemonDetails(pokemonList)
         }
         if(pokemonListSearch && pokemonListSearch.length > 0) {
@@ -66,13 +56,16 @@ export const usePokemonList = () => {
             .catch(err => err)
         } else {
             fetchPokemonDetails(pokemonList)
+            setPokemonListSearch([])
         } 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search, setSearch])
 
     useEffect(() => {
         if(advancedSearch.length > 0) {
             filterPokemonListByType(advancedSearch, setAdvacedSearchList, pokemonDetail)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [advancedSearch, filterPokemonListByType])
 
     return { pokemonDetail, advancedSearchList, fetchAllPokemon, fetchPokemonDetails, fetchPokemonEvolutionChain, setPokemonListSearch, pokemonListSearch, loading }

@@ -9,7 +9,7 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
     const { fetchPokemonEvolutionChain } = usePokemonList()
     const [ evolutionChain, setEvolutionChain ] = useState([])
     const pokemonTypes = types.map(type => type.type.name)
-    const typeName = pokemonTypes.map(type => type)
+    const typeName = pokemonTypes.map((type, i) => <span>{type} {i === 0 && pokemonTypes.length > 1 ? '| ' : null}</span>)
     const location = useLocation();
 
     const getEvolutionChain = async (name) => {
@@ -20,9 +20,10 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
 
     useEffect(() => {
         getEvolutionChain(name)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [location.pathname])
 
-    const getAbilities = () => abilities.map((ability, i) => <span>{ability.ability.name} {i === 0 && '| '}</span>)
+    const getAbilities = () => abilities.map((ability, i) =>  <span>{ability.ability.name} {i === 0 && '| '}</span>)
     const statsColorRange = (statName) => {
         switch(statName){
             case 'hp': 
@@ -33,13 +34,14 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
                 return '#FFAA15'
             case 'speed':
                 return '#00739D'
+            default: return ''
         }
     }
     const getStats = () => stats.map((stat, i) => {
         const getBaseStats = stat.stat.name === 'special-attack' || stat.stat.name === 'special-defense' ? null : stat
         return getBaseStats && (
         <>
-        <Text size="small" weight="bold">
+        <Text size="small" weight="bold" key={stat.stat.name}>
         {getBaseStats.stat.name}
          </Text>
          <Tip content={getBaseStats.base_stat} plain dropProps={{ align: { left: 'right' } }}>
@@ -63,12 +65,13 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
                 <Box pad="small">
                 <List data={overviewList.slice(0, overviewList.length)}
                     primaryKey={item => (
-                    <Text size="small" weight="bold" color="dark-4">
+                    <Text size="small" weight="bold" color="dark-4" key={item.title}>
                         {item.title}
                     </Text>
                     )}
                     secondaryKey={item => (
-                        <Text size="medium" >
+                        <Text size="medium" key={item.data}>
+
                           {item.data}
                         </Text>
                       )}
