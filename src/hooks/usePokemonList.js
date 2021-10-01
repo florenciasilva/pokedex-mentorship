@@ -1,6 +1,7 @@
-import { useState, useEffect, useCallback } from 'react'
-import { useSearchContext } from '../store/SearchContext';
+import { useState, useEffect } from 'react'
+import { useSearchContext } from '../store/SearchContext'
 import { limitNumber } from '../constants'
+import { filterPokemonListByType } from '../utils/filterPokemonListByType'
 
 export const usePokemonList = () => {
     const [ pokemonList, setPokemonList ] = useState([])
@@ -13,42 +14,23 @@ export const usePokemonList = () => {
         const pokeAPI = `https://pokeapi.co/api/v2/pokemon/${url || ''}?limit=${limitNumber}&offset=${offset || ''}`
         fetch(pokeAPI)
         .then(res => res.json())
-        .then(res => {
-            setPokemonList(res.results)
-            return res.results
-        })
+        .then(res => setPokemonList(res.results))
         .catch(err => err)
       }
 
     const fetchPokemonDetails = (list) => {
         let promises = []
         const awaitJson = (responses) => Promise.all(responses.map(response => {
-            if(response.ok) return response.json();
-            throw new Error(response.statusText);
+            if(response.ok) return response.json()
+            throw new Error(response.statusText)
         }))
         list && list.forEach((pokemon) => promises.push(fetch(`https://pokeapi.co/api/v2/pokemon/${pokemon.name}`)))
-    
+
         Promise.all(promises)
         .then(awaitJson)
-        .then(res => {
-            setPokemonDetail(res)
-            return res
-        })
+        .then(res => setPokemonDetail(res))
         .catch(err => err)
     }
-
-    const filterPokemonListByType = useCallback((type) => {
-        if(pokemonDetail) {
-            const filterPokemon = pokemonDetail.map(pokemon => {
-                const filterTypes = pokemon.types.map(pokemonType => pokemonType.type.name === type ? pokemon.name : '' )
-                return pokemon.name === filterTypes.join('') ? pokemon : ''
-            })
-
-            const sanitizeFilterPokemon = filterPokemon.filter(e => e)
-            setAdvacedSearchList(sanitizeFilterPokemon)
-        }
-    }, [pokemonDetail, setAdvacedSearchList])
-
 
     const fetchPokemonEvolutionChain = async (id) => {
         const url = `http://pokeapi.co/api/v2/pokemon-species/${id}/`
@@ -65,22 +47,24 @@ export const usePokemonList = () => {
             fetchPokemonDetails(pokemonListSearch)
         } 
     }, [pokemonList, pokemonListSearch])
-    
+
     useEffect(() => {
         if(search && search.length > 0 && pokemonList.length === 30) {
             fetch(`https://pokeapi.co/api/v2/pokemon/${search}`)
             .then(res => res.json())
             .then(res => setPokemonListSearch([res]))
             .catch(err => err)
-        } else if (search === '' && pokemonList.length === 1) {
+        } else {
             fetchPokemonDetails(pokemonList)
-        }
+        } 
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search, setSearch])
 
     useEffect(() => {
         if(advancedSearch.length > 0) {
-            filterPokemonListByType(advancedSearch)
+            filterPokemonListByType(advancedSearch, setAdvacedSearchList, pokemonDetail)
         }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [advancedSearch, filterPokemonListByType])
 
     return { pokemonDetail, advancedSearchList, fetchAllPokemon, fetchPokemonDetails, fetchPokemonEvolutionChain, setPokemonListSearch, pokemonListSearch }

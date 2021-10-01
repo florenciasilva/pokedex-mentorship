@@ -1,15 +1,18 @@
-import CardList from '../CardList'
+import React, { Suspense } from 'react';
 import Pagination from '../Pagination'
-import { usePokemonList } from '../../hooks/usePokemonList'
-import { useEffect } from 'react'
+import { Spinner } from 'grommet'
+const CardList = React.lazy(() => import('../CardList'));
 
 const Main = () => {
     return (
         <>
+         <Suspense fallback={<Spinner size="medium"/>}>
             <CardList pathname={window.location.href}/>
-            <Pagination />
+        </Suspense>
+        <Pagination />
         </>
     )
 }
 
 export default Main
+
