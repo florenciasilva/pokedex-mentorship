@@ -2,8 +2,11 @@
 
 ## Demo
 
+![Pokedex Demo Recording](README-assets/Pokedex.mov)
 
 ### Lighthouse Report on Localhost
+
+![Lighthouse Report on Localhost](README-assets/lighthouse-report.mov)
 
 
 ## Functionalities
