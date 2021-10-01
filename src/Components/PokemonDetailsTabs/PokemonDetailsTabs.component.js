@@ -9,7 +9,7 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
     const { fetchPokemonEvolutionChain } = usePokemonList()
     const [ evolutionChain, setEvolutionChain ] = useState([])
     const pokemonTypes = types.map(type => type.type.name)
-    const typeName = pokemonTypes.map(type => type)
+    const typeName = pokemonTypes.map((type, i) => <span>{type} {i === 0 && pokemonTypes.length > 1 ? '| ' : null}</span>)
     const location = useLocation();
 
     const getEvolutionChain = async (name) => {
@@ -22,7 +22,7 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
         getEvolutionChain(name)
     }, [location.pathname])
 
-    const getAbilities = () => abilities.map((ability, i) => <span>{ability.ability.name} {i === 0 && '| '}</span>)
+    const getAbilities = () => abilities.map((ability, i) =>  <span>{ability.ability.name} {i === 0 && '| '}</span>)
     const statsColorRange = (statName) => {
         switch(statName){
             case 'hp': 
@@ -62,12 +62,12 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
             <Tab title="Overview">
                 <Box pad="small">
                 <List data={overviewList.slice(0, overviewList.length)}
-                    primaryKey={item => (
+                    primaryKey={(item, i) => (
                     <Text size="small" weight="bold" color="dark-4">
                         {item.title}
                     </Text>
                     )}
-                    secondaryKey={item => (
+                    secondaryKey={(item, i) => (
                         <Text size="medium" >
                           {item.data}
                         </Text>
