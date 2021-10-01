@@ -33,14 +33,14 @@ export const usePokemonList = () => {
     }
 
     const fetchPokemonEvolutionChain = async (id) => {
-        const url = `http://pokeapi.co/api/v2/pokemon-species/${id}/`
+        const url = `https://pokeapi.co/api/v2/pokemon-species/${id}/`
         const fetchChain = await fetch(url)
         const data = fetchChain.json()
         return data
     }
 
     useEffect(() => {
-       if(pokemonList && pokemonList.length > 0 ) {
+       if(pokemonList && pokemonList.length > 0) {
             fetchPokemonDetails(pokemonList)
         }
         if(pokemonListSearch && pokemonListSearch.length > 0) {
@@ -56,6 +56,7 @@ export const usePokemonList = () => {
             .catch(err => err)
         } else {
             fetchPokemonDetails(pokemonList)
+            setPokemonListSearch([])
         } 
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [search, setSearch])

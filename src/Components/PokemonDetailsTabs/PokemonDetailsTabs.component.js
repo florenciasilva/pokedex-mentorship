@@ -41,7 +41,7 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
         const getBaseStats = stat.stat.name === 'special-attack' || stat.stat.name === 'special-defense' ? null : stat
         return getBaseStats && (
         <>
-        <Text size="small" weight="bold">
+        <Text size="small" weight="bold" key={stat.stat.name}>
         {getBaseStats.stat.name}
          </Text>
          <Tip content={getBaseStats.base_stat} plain dropProps={{ align: { left: 'right' } }}>
@@ -64,13 +64,14 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
             <Tab title="Overview">
                 <Box pad="small">
                 <List data={overviewList.slice(0, overviewList.length)}
-                    primaryKey={(item, i) => (
-                    <Text size="small" weight="bold" color="dark-4">
+                    primaryKey={item => (
+                    <Text size="small" weight="bold" color="dark-4" key={item.title}>
                         {item.title}
                     </Text>
                     )}
-                    secondaryKey={(item, i) => (
-                        <Text size="medium" >
+                    secondaryKey={item => (
+                        <Text size="medium" key={item.data}>
+
                           {item.data}
                         </Text>
                       )}
