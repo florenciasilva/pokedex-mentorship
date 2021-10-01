@@ -2,6 +2,7 @@ import React from 'react';
 import Pagination from '../Pagination'
 import CardList from '../CardList'
 
+
 const Main = () => {
     return (
         <>

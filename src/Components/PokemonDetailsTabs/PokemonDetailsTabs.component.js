@@ -71,6 +71,7 @@ const PokemonDetailsDropdown = ({pokemonDetail}) => {
                     )}
                     secondaryKey={item => (
                         <Text size="medium" key={item.data}>
+
                           {item.data}
                         </Text>
                       )}
